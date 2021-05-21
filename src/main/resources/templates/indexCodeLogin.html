@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"/>
+    <title>登陆</title>
+    <th:block th:include="common/base::proejct-context" th:remove="tag"/>
+</head>
+
+<style>
+
+    *{
+        margin: 0;
+        padding: 0;
+        list-style-type:none
+    }
+
+    @font-face{
+        font-family: myFirstFont;
+        src: url([[@{/static/font/siyuanSong.ttf}]]);
+    }
+
+    body{
+        background: url([[@{/static/image/bg.png}]]);
+    }
+    #white{
+        width: 70%;
+        /*height: calc(70vh);*/
+
+        background-color: rgb(237, 237, 237);
+        margin: 0 auto;
+        margin-top: 10vh;
+        border-radius: 25px;
+    }
+    #allCenterDiv{
+        text-align: center;
+    }
+
+    #title{
+        padding-top: 8vh;
+    }
+
+    #idCardDiv{
+        padding-top: 6vh;
+        height: 70px;
+    }
+
+    #idCard,#loginCode{
+        width: 592px;
+        height: 70px;
+        border: 1px solid #a7a7a7;
+        border-left: 0px;
+        background-color: #F8F8F8;
+        border-radius: 0pt 8pt 8pt 0pt;
+        outline:none;
+        margin-left: -5px;
+        text-align:center;
+        font-size: 26px;
+
+    }
+
+    .icon{
+        width: 80px;
+        height: 70px;
+        background-color: #F0F7FF;
+        border-radius: 8pt 0pt 0pt 8pt;
+        vertical-align:top;
+        border: 1px solid #a7a7a7;
+    }
+
+    #loginBtnDiv{
+        padding-top: 14vh;
+    }
+
+    #loginBtn{
+        width: 672px;
+        height: 70px;
+        background-color: #2F84F7;
+        border-radius: 8pt;
+        border: 0;
+        outline:none;
+        color: white;
+        font-size: 26px;
+    }
+
+    #textDescDiv{
+        padding-top: calc(6vh);
+        padding-bottom: calc(6vh);
+
+    }
+    #text{
+        margin: 0 auto;
+        width: 35vw;
+        color:#8B8A8A;
+        text-align: left;
+    }
+
+    #keyboardDiv,#keyboardCodeDiv{
+        width: 18vw;
+        height: 15vw;
+        position:absolute;left:40vw;top:50vh;
+        background-color: white;
+        padding: 3vh;
+        display: none;
+    }
+    #keyboardCodeDiv{
+        position:absolute;left:40vw;top:60vh;
+    }
+    .number{
+        display: inline-block;
+        width: 3vw;
+        height: 3vw;
+        background-color: #7F8690;
+        line-height: 3vw;
+        text-align: center;
+        font-size: 26px;
+        color: white;
+        margin: 1vh;
+        border-radius: 5px;
+        cursor: pointer;
+        user-select:none
+    }
+</style>
+
+<body oncontextmenu="doNothing()">
+
+<div id="keyboardDiv">
+    <div class="number" onclick="inputfun7()">7</div>
+    <div class="number" onclick="inputfun8()">8</div>
+    <div class="number" onclick="inputfun9()">9</div>
+    <div class="number" onclick="delOne()">←</div>
+    <div class="number" onclick="inputfun4()">4</div>
+    <div class="number" onclick="inputfun5()">5</div>
+    <div class="number" onclick="inputfun6()">6</div>
+    <div class="number" onclick="inputfunX()">X</div>
+    <div class="number" onclick="inputfun1()">1</div>
+    <div class="number" onclick="inputfun2()">2</div>
+    <div class="number" onclick="inputfun3()">3</div>
+    <div class="number" onclick="inputfun0()">0</div>
+    <div class="number" style="font-size:20px ;width: 5vw;margin-left: 2vw;background-color: #D2A2F0" onclick="closeBtn()">确认</div>
+    <div class="number" style="font-size:20px ;width: 5vw;margin-left: 2vw;background-color: #FEB02A" onclick="closeBtn()">关闭</div>
+</div>
+<div id="keyboardCodeDiv">
+    <div class="number" onclick="codeInputfun7()">7</div>
+    <div class="number" onclick="codeInputfun8()">8</div>
+    <div class="number" onclick="codeInputfun9()">9</div>
+    <div class="number" onclick="codeIelOne()">←</div>
+    <div class="number" onclick="codeInputfun4()">4</div>
+    <div class="number" onclick="codeInputfun5()">5</div>
+    <div class="number" onclick="codeInputfun6()">6</div>
+    <div class="number" onclick="codeInputfun0()">0</div>
+    <div class="number" onclick="codeInputfun1()">1</div>
+    <div class="number" onclick="codeInputfun2()">2</div>
+    <div class="number" onclick="codeInputfun3()">3</div>
+    <div class="number" style="font-size:20px ;width: 5vw;margin-left: 2vw;background-color: #D2A2F0" onclick="closeCodeBtn()">确认</div>
+    <div class="number" style="font-size:20px ;width: 5vw;margin-left: 2vw;background-color: #FEB02A" onclick="closeCodeBtn()">关闭</div>
+</div>
+
+<div id="white">
+    <div id="allCenterDiv">
+        <div id="title">
+            <span style="font-family: myFirstFont;font-size: 27pt;color: #1A1A1A;letter-spacing:5px">安全生产资格考试</span>
+            <span style="font-family: myFirstFont;font-size: 37pt;color: #EF2941;letter-spacing:3px">在线考试系统</span>
+        </div>
+        <div id="idCardDiv">
+            <div class="idInputBorder">
+                <img class="icon" th:src="@{/static/image/idCard.png}" alt="">
+                <input autocomplete="off" disableautocomplete type="text" value=""  onfocus="show()" placeholder="请输入身份证号" id="idCard">
+            </div>
+            <div class="idInputBorder" style="margin-top: 2vh">
+                <img class="icon" th:src="@{/static/image/idCard.png}" alt="">
+                <input autocomplete="off" disableautocomplete type="text" value=""  onfocus="showCode()" placeholder="请输入授权码" id="loginCode">
+            </div>
+        </div>
+
+        <div id="loginBtnDiv">
+            <button id="loginBtn" onclick="checkIdCard()" >授权码登陆</button>
+        </div>
+        <div id="textDescDiv">
+            <div id="text">
+                <ul style="">
+                    <li>1、输入考生身份证号码，点击“考生身份验证”</li>
+                    <li>2、确保摄像头打开并正对镜头，进行人脸识别完成识别后，即刻开始考试答题</li>
+                    <li>3、如果身份验证失败，请重试并联系考场工作人员</li>
+                </ul>
+
+
+            </div>
+        </div>
+    </div>
+
+</div>
+<!--<span onclick="codeLogin()" style="float: right;color: #3b5997;cursor: pointer;user-select:none">身份证登陆</span>-->
+<span onclick="codeLogin()" style="float: right;color: white;cursor: pointer;user-select:none">身份证登陆</span>
+</body>
+
+<script type="text/javascript" th:inline="javascript">
+
+    function checkIdCard() {
+        var idCard = $("#idCard").val();
+        var loginCode = $("#loginCode").val();
+        //向后台发送异步请求。
+        // 异步请求可以不进行页面跳转，
+        // 就可以从后台获取到返回的参数。
+        $.ajax({
+            type: "post",
+            url: ctxPath + "/checkIdCardAndCode",
+            data: {idCard: idCard,loginCode:loginCode},
+            dataType: "json",
+            success: function (result) {
+                if (result.flag) {
+                    window.location.href = ctxPath + "/exam/list";
+                } else {
+                    alert(result.msg);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+    }
+
+    function closeBtn() {
+        $("#keyboardDiv").css("display","none");
+    }
+    function show() {
+        $("#keyboardDiv").css("display","block");
+        closeCodeBtn();
+    }
+
+    function closeCodeBtn(){
+        $("#keyboardCodeDiv").css("display","none");
+    }
+
+    function showCode(){
+        $("#keyboardCodeDiv").css("display","block");
+        closeBtn();
+    }
+
+    function inputInput(n){
+        let cur = $("#idCard").val();
+        cur = cur + "" + n;
+        $("#idCard").val(cur);
+    }
+    function inputfun0() {inputInput(0)}
+    function inputfun1() {inputInput(1)}
+    function inputfun2() {inputInput(2)}
+    function inputfun3() {inputInput(3)}
+    function inputfun4() {inputInput(4)}
+    function inputfun5() {inputInput(5)}
+    function inputfun6() {inputInput(6)}
+    function inputfun7() {inputInput(7)}
+    function inputfun8() {inputInput(8)}
+    function inputfun9() {inputInput(9)}
+    function inputfunX() {inputInput('X')}
+    function delOne() {
+        let cur = $("#idCard").val();
+        if(cur.length>0){
+            cur = cur.substring(0,cur.length-1);
+            $("#idCard").val(cur);
+        }
+    }
+
+    function codeInputInput(n){
+        let cur = $("#loginCode").val();
+        cur = cur + "" + n;
+        $("#loginCode").val(cur);
+    }
+    function codeInputfun0() {codeInputInput(0)}
+    function codeInputfun1() {codeInputInput(1)}
+    function codeInputfun2() {codeInputInput(2)}
+    function codeInputfun3() {codeInputInput(3)}
+    function codeInputfun4() {codeInputInput(4)}
+    function codeInputfun5() {codeInputInput(5)}
+    function codeInputfun6() {codeInputInput(6)}
+    function codeInputfun7() {codeInputInput(7)}
+    function codeInputfun8() {codeInputInput(8)}
+    function codeInputfun9() {codeInputInput(9)}
+    function codeIelOne() {
+        let cur = $("#loginCode").val();
+        if(cur.length>0){
+            cur = cur.substring(0,cur.length-1);
+            $("#loginCode").val(cur);
+        }
+    }
+
+
+    function codeLogin() {
+        window.location.href=ctxPath + "/index";
+    }
+</script>
+
+</html>

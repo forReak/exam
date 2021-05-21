@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"/>
+    <title>登陆</title>
+    <th:block th:include="common/base::proejct-context" th:remove="tag"/>
+</head>
+
+<style>
+
+    *{
+        margin: 0;
+        padding: 0;
+        list-style-type:none
+    }
+
+    @font-face{
+        font-family: myFirstFont;
+        src: url([[@{/static/font/siyuanSong.ttf}]]);
+    }
+
+    body{
+        background: url([[@{/static/image/bg.png}]]);
+    }
+
+    #white{
+        width: 70%;
+        /*height: calc(70vh);*/
+        background-color: white;
+        margin: 0 auto;
+        margin-top: calc(15vh);
+        border-radius: 25px;
+    }
+
+    #allCenterDiv{
+        text-align: left;
+    }
+
+    #title{
+        margin: 0 auto;
+        width: 50vw;
+        text-align: left;
+        padding-top: calc(5vh);
+    }
+
+    #subjectList{
+        padding-top: calc(3vh);
+        margin: 0 auto;
+        width: 50vw;
+        height: 60vh;
+    }
+
+    .itemDiv{
+        width: 100%;
+        border: 1px solid #dcdcdc;
+        border-radius: 8px;
+        padding: 2vh 2vw;
+        margin-top: 2vh;
+    }
+
+    .subjectText{
+        font-size: 23pt;
+    }
+
+    .itemDivLeft{
+        display: inline-block;
+    }
+    .itemDivLeft{
+
+    }
+
+    .itembottom{
+        margin-top: 1vh;
+    }
+    .ti{
+        background-color: #EEF5FF;
+        color: #2F84F7;
+        display: inline-block;
+        padding: 4px 6px;
+    }
+
+    .fen{
+        background-color: #FEEEF0;
+        color: #EF2941;
+        display: inline-block;
+        padding: 4px 6px;
+    }
+
+    button{
+        margin-top: 2vh;
+        float: right;
+        width: 8vw;
+        height: 50px;
+        background-color: #2F84F7;
+        border-radius: 8pt;
+        border: 0;
+        outline:none;
+        color: white;
+        font-size: 16px;
+    }
+    button:focus {
+        border: 0 none;
+        outline: none;
+    }
+</style>
+
+<body  oncontextmenu="doNothing()">
+    <div id="white">
+        <div id="allCenterDiv">
+            <div id="title">
+                <span style="display:block;font-family: myFirstFont;font-size: 27pt;color: #1A1A1A;letter-spacing:5px">所选试题</span>
+            </div>
+
+            <div id="subjectList">
+                <!--<div class="itemDiv">
+                    <div class="itemDivLeft">
+                        <div class="itemUp">
+                            <span class="subjectText">高压电工作业单选题</span>
+                        </div>
+                        <div class="itembottom">
+                            <div class="ti">共100题</div> <div class="fen">190分钟</div>
+                        </div>
+                    </div>
+                    <button >参与考试</button>
+                </div>
+                <div class="itemDiv">
+                    <div class="itemDivLeft">
+                        <div class="itemUp">
+                            <span class="subjectText">高压电工作业单选题</span>
+                        </div>
+                        <div class="itembottom">
+                            <div class="ti">共100题</div> <div class="fen">190分钟</div>
+                        </div>
+                    </div>
+                    <button >参与考试</button>
+                </div>
+                <div class="itemDiv">
+                    <div class="itemDivLeft">
+                        <div class="itemUp">
+                            <span class="subjectText">高压电工作业单选题</span>
+                        </div>
+                        <div class="itembottom">
+                            <div class="ti">共100题</div> <div class="fen">190分钟</div>
+                        </div>
+                    </div>
+                    <button >参与考试</button>
+                </div>-->
+            </div>
+        </div>
+    </div>
+</body>
+
+<script type="text/javascript" th:inline="javascript">
+    var examList = [[${examList}]];
+    $(function(){
+        if(examList === undefined || examList === null || examList === ""){
+        }else{
+            initExamList();
+        }
+    });
+
+    function initExamList(){
+        let html = "";
+
+        for(let i=0;i<examList.length;i++) {
+            let examId = examList[i].id;
+            let examName = examList[i].workTypeName;
+            let score = examList[i].score;
+            let time = examList[i].time;
+            let num = examList[i].num;
+
+
+            let template = "<div class=\"itemDiv\">\n" +
+                "                    <div class=\"itemDivLeft\">\n" +
+                "                        <div class=\"itemUp\">\n" +
+                "                            <span class=\"subjectText\">"+examName+"</span>\n" +
+                "                        </div>\n" +
+                "                        <div class=\"itembottom\">\n" +
+                "                            <div class=\"ti\">共"+num+"题</div> <div class=\"fen\">"+time+"分钟</div>\n" +
+                "                        </div>\n" +
+                "                    </div>\n" +
+                "                    <button onclick='enterExam(\""+examId+"\")'>参与考试</button>\n" +
+                "                </div>";
+            html = html + template;
+        }
+        $("#subjectList").append(html);
+    }
+
+    function enterExam(workTypeId){
+        window.location.href = ctxPath + "/exam/readmePage?workTypeId="+workTypeId;
+    }
+</script>
+
+</html>

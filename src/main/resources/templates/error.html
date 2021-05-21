@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <th:block th:include="common/base::proejct-context" th:remove="tag"/>
+</head>
+<body  oncontextmenu="doNothing()">
+未认证！
+</body>
+<script>
+    setInterval(enterExam,2000)
+
+    function enterExam(){
+        window.location.href = ctxPath + "/";
+    }
+</script>
+</html>

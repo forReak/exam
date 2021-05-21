@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"/>
+    <title>登陆</title>
+    <th:block th:include="common/base::proejct-context" th:remove="tag"/>
+</head>
+
+<style>
+
+    *{
+        margin: 0;
+        padding: 0;
+        list-style-type:none
+    }
+
+    @font-face{
+        font-family: myFirstFont;
+        src: url([[@{/static/font/siyuanSong.ttf}]]);
+    }
+
+    body{
+        background: url([[@{/static/image/bg.png}]]);
+    }
+    #white{
+        width: 70%;
+        /*height: calc(70vh);*/
+
+        background-color: rgb(237, 237, 237);
+        margin: 0 auto;
+        margin-top: 10vh;
+        border-radius: 25px;
+    }
+    #allCenterDiv{
+        text-align: center;
+    }
+
+    #title{
+        padding-top: 8vh;
+    }
+
+    #idCardDiv{
+        padding-top: 8vh;
+        height: 70px;
+    }
+
+    #idCard{
+        width: 592px;
+        height: 70px;
+        border: 1px solid #a7a7a7;
+        border-left: 0px;
+        background-color: #F8F8F8;
+        border-radius: 0pt 8pt 8pt 0pt;
+        outline:none;
+        margin-left: -5px;
+        text-align:center;
+        font-size: 26px;
+
+    }
+
+    #icon{
+        width: 80px;
+        height: 70px;
+        background-color: #F0F7FF;
+        border-radius: 8pt 0pt 0pt 8pt;
+        vertical-align:top;
+        border: 1px solid #a7a7a7;
+    }
+
+    #loginBtnDiv{
+        padding-top: calc(12vh);
+    }
+
+    #loginBtn{
+        width: 672px;
+        height: 70px;
+        background-color: #2F84F7;
+        border-radius: 8pt;
+        border: 0;
+        outline:none;
+        color: white;
+        font-size: 26px;
+    }
+
+    #textDescDiv{
+        padding-top: calc(6vh);
+        padding-bottom: calc(6vh);
+
+    }
+    #text{
+        margin: 0 auto;
+        width: 35vw;
+        color:#8B8A8A;
+        text-align: left;
+    }
+
+    #keyboardDiv{
+        width: 18vw;
+        height: 15vw;
+        position:absolute;left:40vw;top:50vh;
+        background-color: white;
+        padding: 3vh;
+        display: none;
+    }
+    .number{
+        display: inline-block;
+        width: 3vw;
+        height: 3vw;
+        background-color: #7F8690;
+        line-height: 3vw;
+        text-align: center;
+        font-size: 26px;
+        color: white;
+        margin: 1vh;
+        border-radius: 5px;
+        cursor: pointer;
+        user-select:none
+    }
+</style>
+
+<body oncontextmenu="doNothing()">
+
+<div id="keyboardDiv">
+    <div class="number" onclick="inputfun7()">7</div>
+    <div class="number" onclick="inputfun8()">8</div>
+    <div class="number" onclick="inputfun9()">9</div>
+    <div class="number" onclick="delOne()">←</div>
+    <div class="number" onclick="inputfun4()">4</div>
+    <div class="number" onclick="inputfun5()">5</div>
+    <div class="number" onclick="inputfun6()">6</div>
+    <div class="number" onclick="inputfunX()">X</div>
+    <div class="number" onclick="inputfun1()">1</div>
+    <div class="number" onclick="inputfun2()">2</div>
+    <div class="number" onclick="inputfun3()">3</div>
+    <div class="number" onclick="inputfun0()">0</div>
+    <div class="number" style="font-size:20px ;width: 5vw;margin-left: 2vw;background-color: #D2A2F0" onclick="closeBtn()">确认</div>
+    <div class="number" style="font-size:20px ;width: 5vw;margin-left: 2vw;background-color: #FEB02A" onclick="closeBtn()">关闭</div>
+</div>
+
+<div id="white">
+    <div id="allCenterDiv">
+        <div id="title">
+            <span style="font-family: myFirstFont;font-size: 27pt;color: #1A1A1A;letter-spacing:5px">安全生产资格考试</span>
+            <span style="font-family: myFirstFont;font-size: 37pt;color: #EF2941;letter-spacing:3px">在线考试系统</span>
+        </div>
+        <div id="idCardDiv">
+            <div id="idInputBorder">
+                <img id="icon" th:src="@{/static/image/idCard.png}" alt="">
+                <input autocomplete="off" disableautocomplete type="text" value=""  onfocus="show()" placeholder="请输入身份证号" id="idCard">
+            </div>
+        </div>
+
+        <div id="loginBtnDiv">
+            <button id="loginBtn" onclick="checkIdCard()" >考生身份验证</button>
+        </div>
+        <div id="textDescDiv">
+            <div id="text">
+                <ul style="">
+                    <li>1、输入考生身份证号码，点击“考生身份验证”</li>
+                    <li>2、确保摄像头打开并正对镜头，进行人脸识别完成识别后，即刻开始考试答题</li>
+                    <li>3、如果身份验证失败，请重试并联系考场工作人员</li>
+                </ul>
+
+
+            </div>
+        </div>
+    </div>
+
+</div>
+<!--<span onclick="codeLogin()" style="float: right;color: #3b5997;cursor: pointer;user-select:none">授权码登陆</span>-->
+<span onclick="codeLogin()" style="float: right;color: white;cursor: pointer;user-select:none">授权码登陆</span>
+</body>
+
+<script type="text/javascript" th:inline="javascript">
+
+    var e = [[${e}]];
+    var n = [[${n}]];
+
+    function checkIdCard() {
+        var idCard = $("#idCard").val();
+
+        // var key = new RSAKeyPair( e,"",n);
+        // var encode_content = encodeURIComponent(idCard);
+        // var encryptData = encryptedString(key,encode_content);
+
+        //获取最终公钥
+        var key = RSAUtils.getKeyPair(e, '', n);
+        //进行数据加密
+        var ap = RSAUtils.encryptedString(key,  encodeURI(idCard));
+        console.log(ap)
+        //向后台发送异步请求。
+        // 异步请求可以不进行页面跳转，
+        // 就可以从后台获取到返回的参数。
+        $.ajax({
+            type: "post",
+            url: ctxPath + "/checkIdCard",
+            data: {idCard: ap},
+            dataType: "json",
+            success: function (result) {
+                if (result.flag) {
+                    //todo 加密身份证信息
+                    window.location.href=ctxPath + "/facePage" + "?idCard="+ap;
+                } else {
+                    alert(result.msg);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+    }
+
+    function closeBtn() {
+        $("#keyboardDiv").css("display","none");
+    }
+    function show() {
+        $("#keyboardDiv").css("display","block");
+    }
+
+    function inputInput(n){
+        let cur = $("#idCard").val();
+        cur = cur + "" + n;
+        $("#idCard").val(cur);
+    }
+    function inputfun0() {inputInput(0)}
+    function inputfun1() {inputInput(1)}
+    function inputfun2() {inputInput(2)}
+    function inputfun3() {inputInput(3)}
+    function inputfun4() {inputInput(4)}
+    function inputfun5() {inputInput(5)}
+    function inputfun6() {inputInput(6)}
+    function inputfun7() {inputInput(7)}
+    function inputfun8() {inputInput(8)}
+    function inputfun9() {inputInput(9)}
+    function inputfunX() {inputInput('X')}
+    function delOne() {
+        let cur = $("#idCard").val();
+        if(cur.length>0){
+            cur = cur.substring(0,cur.length-1);
+            $("#idCard").val(cur);
+        }
+    }
+
+    function codeLogin() {
+        window.location.href=ctxPath + "/codeLogin";
+    }
+</script>
+
+</html>

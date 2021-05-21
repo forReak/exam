@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"/>
+    <title>登陆</title>
+    <th:block th:include="common/base::proejct-context" th:remove="tag"/>
+</head>
+
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        list-style-type:none
+    }
+
+    @font-face{
+        font-family: myFirstFont;
+        src: url([[@{/static/font/siyuanSong.ttf}]]);
+    }
+
+    body{
+        background: url([[@{/static/image/bg.png}]]);
+    }
+
+    #white{
+        width: 70%;
+        /*height: calc(70vh);*/
+        background-color: white;
+        margin: 0 auto;
+        margin-top: 8vh;
+        border-radius: 25px;
+    }
+
+    #allCenterDiv{
+        text-align: left;
+    }
+
+    #title{
+        margin: 0 auto;
+        width: 50vw;
+        text-align: center;
+        padding-top: calc(5vh);
+    }
+
+    #text{
+        margin: 0 auto;
+        line-height: 40px;
+        width: 60vw;
+        text-align: left;
+        padding-top: calc(5vh);
+        font-size: 14pt;
+        letter-spacing:4px;
+        font-family: "Microsoft YaHei", "Lucida Grande", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    #agreeDiv{
+        padding-top: calc(6vh);
+        text-align: center;
+        padding-bottom: calc(6vh);
+    }
+    button{
+        width: 40vw;
+        height: 7vh;
+        background-color: #2F84F7;
+        border-radius: 8pt;
+        border: 0;
+        outline:none;
+        color: white;
+        font-size: 20px;
+    }
+    button:focus {
+        border: 0 none;
+        outline: none;
+    }
+</style>
+
+<body  oncontextmenu="doNothing()">
+    <div id="white">
+        <div id="allCenterDiv">
+            <div id="title">
+                <span style="display:block;font-family: myFirstFont;font-size: 27pt;color: #EF2941;letter-spacing:5px">考生信守承诺</span>
+            </div>
+
+            <div id="text">
+                本人郑重承诺： <br>
+                1、本人提交的学历证书、身份证和健康承诺等相关信息均真实有效。 <br>
+                2、严格落实净考制度，除身份证外，其他任何物品不带入考场。 <br>
+                3、考试期间独立完成考试，不交头接耳，不东张西望，遵守考场纪律。 <br>
+                4、尊重并俯冲监考人员及考评人员的考试安排。 <br>
+                5、爱护考场相关设施设备。 <br>
+                6、考试结束后，收好个人物品，安静离场。 <br>
+                7、如本人违背上述规定，自愿承担由此造成的后果。<br>
+            </div>
+            <div id="agreeDiv">
+                <button id="agreeBtn" onclick="agree()" >我自愿遵守承诺书，开始考试</button>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script type="text/javascript" th:inline="javascript">
+    var workTypeId = [[${workTypeId}]];
+    $(function(){
+        if(workTypeId === undefined || workTypeId === null || workTypeId === ""){
+            window.location.href = ctxPath + "/index";
+        }
+    });
+
+    function agree(){
+        window.location.href = ctxPath + "/exam/examQuestionsPage/?workTypeId="+workTypeId;
+    }
+</script>
+
+</html>

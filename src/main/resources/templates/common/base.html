@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8" />
+    <title>通用配置文件</title>
+</head>
+<body>
+<th:block th:fragment="common-js">
+    <script th:src="@{/static/js/jquery.js}"></script>
+    <script th:src="@{/static/js/bootstrap.js}"></script>
+    <script th:src="@{/static/js/popper.js}"></script>
+    <script th:src="@{/static/js/bootstrap-datetimepicker.js}"></script>
+    <script th:src="@{/static/js/bootstrap-datetimepicker.zh-CN.js}"></script>
+
+</th:block>
+
+<th:block th:fragment="bootstrap-css">
+    <link rel="stylesheet" th:href="@{/static/css/bootstrap.css}"/>
+    <link rel="stylesheet" th:href="@{/static/css/bootstrap-datetimepicker.min.css}"/>
+</th:block>
+<th:block th:fragment="commonCss">
+    <!--<link rel="stylesheet" th:href="@{/css/commonCss.css}"/>-->
+</th:block>
+
+<th:block th:fragment="proejct-context">
+<!--    <th:block th:include="common/base::common-js"/>-->
+    <script th:src="@{/static/js/jquery.js}"></script>
+    <script th:src="@{/static/js/RSA.js}"></script>
+    <script th:src="@{/static/js/Barrett.js}"></script>
+    <script th:src="@{/static/js/BigInt.js}"></script>
+    <script th:src="@{/static/js/security.js}"></script>
+    <script th:src="@{/static/js/bootstrap.js}"></script>
+    <script th:src="@{/static/js/popper.js}"></script>
+    <script th:src="@{/static/js/bootstrap-datetimepicker.js}"></script>
+    <script th:src="@{/static/js/bootstrap-datetimepicker.zh-CN.js}"></script>
+<!--    <th:block th:include="common/base::bootstrap-css"/>-->
+    <!--<th:block th:include="/common/base::commonCss"/>-->
+    <meta name="__ctx__" th:content="${#httpServletRequest.getContextPath()}"/>
+    <script th:inline="javascript">
+        var ctx = $('meta[name="__ctx__"]');
+        var ctxPath = ctx.length>0?ctx[0].content:"";
+        function doNothing(){
+            window.event.returnValue=false;
+            return false;
+        }
+    </script>
+    <script language="javascript">
+        //防止页面后退
+        history.pushState(null, null, document.URL);
+        window.addEventListener('popstate', function () {
+            history.pushState(null, null, document.URL);
+        });
+
+        /*window.onblur = function() {
+            alert('系统检测到您已进行非法操作！下次将直接停止考试！');
+        }*/
+
+    </script>
+</th:block>
+</body>
+</html>
+

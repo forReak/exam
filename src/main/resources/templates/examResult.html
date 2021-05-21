@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"/>
+    <title>登陆</title>
+    <th:block th:include="common/base::proejct-context" th:remove="tag"/>
+</head>
+
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        list-style-type:none
+    }
+
+    @font-face{
+        font-family: myFirstFont;
+        src: url([[@{/static/font/siyuanSong.ttf}]]);
+    }
+
+    body{
+        background: url([[@{/static/image/bg.png}]]);
+    }
+
+    #white{
+        width: 70%;
+        /*height: calc(70vh);*/
+        background-color: white;
+        margin: 0 auto;
+        margin-top: 10vh;
+        border-radius: 25px;
+    }
+
+    #allCenterDiv{
+        text-align: center;
+    }
+
+    #title{
+        margin: 0 auto;
+        width: 50vw;
+        text-align: center;
+        padding-top: 10vh;
+    }
+
+    #text{
+        margin: 0 auto;
+        line-height: 40px;
+        width: 43vw;
+        text-align: left;
+        padding-top: calc(5vh);
+        font-size: 15pt;
+        letter-spacing:4px;
+        font-family: "Microsoft YaHei", "Lucida Grande", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    #agreeDiv{
+        padding-top: calc(6vh);
+        text-align: center;
+        padding-bottom: calc(6vh);
+    }
+    button{
+        width: 20vw;
+        height: 7vh;
+        background-color: #feb02b;
+        border-radius: 8pt;
+        border: 0;
+        outline:none;
+        color: white;
+        font-size: 26px;
+    }
+    button:focus {
+        border: 0 none;
+        outline: none;
+    }
+</style>
+
+<body  oncontextmenu="doNothing()">
+    <div id="white">
+        <div id="allCenterDiv">
+            <div id="title">
+                <span style="display:block;font-family: myFirstFont;font-size: 27pt;color: #EF2941;letter-spacing:5px">考试成绩：<span id="score"></span>分</span>
+            </div>
+
+            <div id="pic" style="margin: 0 auto;width: 100%;">
+                <img id="notpassImg" th:src="@{/static/image/notpass.png}" style="width: 20vw;display: none" alt="">
+                <img id="passImg" th:src="@{/static/image/pass.png}" style="width: 20vw;display: none" alt="">
+            </div>
+            <div id="textDiv">
+                <span id="text"></span>
+            </div>
+            <div id="agreeDiv">
+                <button id="agreeBtn" onclick="back()" >退出</button>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script type="text/javascript" th:inline="javascript">
+    var userName = [[${userName}]];
+    var score = [[${score}]];
+    $(function(){
+        if(userName === undefined || userName === null || userName === ""){
+            window.location.href = ctxPath + "/index";
+        }
+        if(score === undefined || score === null || score === ""){
+            window.location.href = ctxPath + "/index";
+        }
+        initExamResult();
+    });
+
+    function initExamResult(){
+        $("#score").html(score);
+        var textnotpass = userName+ "，很遗憾你考试未通过。";
+        var textpass = userName+ "，恭喜你考试通过。";
+        var scoreNumber = score - 0;
+        if(scoreNumber>=80){
+            $("#text").html(textpass);
+            $("#passImg").css("display","inline-block");
+        }else{
+            $("#text").html(textnotpass);
+            $("#notpassImg").css("display","inline-block");
+        }
+
+
+    }
+
+    function back(){
+        window.location.href = ctxPath + "/exam/userBack";
+    }
+</script>
+
+</html>

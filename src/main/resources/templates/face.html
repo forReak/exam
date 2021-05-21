@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"/>
+    <title>登陆</title>
+    <th:block th:include="common/base::proejct-context" th:remove="tag"/>
+</head>
+
+<style>
+
+    *{
+        margin: 0;
+        padding: 0;
+        list-style-type:none
+    }
+    @font-face{
+        font-family: myFirstFont;
+        src: url([[@{/static/font/siyuanSong.ttf}]]);
+    }
+    body{
+        background: url([[@{/static/image/bg.png}]]);
+    }
+    #white{
+        width: 70%;
+        /*height: calc(70vh);*/
+        background-color: white;
+        margin: 0 auto;
+        margin-top: 10vh;
+        border-radius: 25px;
+    }
+
+    #allCenterDiv{
+        text-align: center;
+    }
+
+    #title{
+        margin: 0 auto;
+        width: 50vw;
+        text-align: left;
+        padding-top: calc(5vh);
+    }
+
+    #faceDiv{
+        margin-top: 20px;
+        background: url([[@{/static/image/faceBorder.png}]]);
+        width: 491px;
+        height: 384px;
+        margin: 0 auto;
+    }
+
+    #video{
+        outline:none;
+        margin-top: 40px;
+    }
+    video::-webkit-media-controls-enclosure{
+        display: none;
+    }
+
+    #checkClaim{
+
+    }
+    #desc{
+        margin-top: 10px;
+    }
+    #checkBtnDiv{
+        padding-top: calc(2vh);
+        padding-bottom: calc(2vh);
+    }
+    #capture{
+        width: 472px;
+        height: 50px;
+        background-color: #2F84F7;
+        border-radius: 8pt;
+        border: 0;
+        outline:none;
+        color: white;
+        font-size: 20px;
+    }
+
+    #cover{
+        position:absolute;left:0px;top:0px;
+        background:rgba(0, 0, 0, 0.4);
+        width:100%;  /*宽度设置为100%，这样才能使隐藏背景层覆盖原页面*/
+        height:100%;
+        filter:alpha(opacity=60);  /*设置透明度为60%*/
+        opacity:0.6;  /*非IE浏览器下设置透明度为60%*/
+        display:none;
+        z-Index:1;
+    }
+</style>
+
+<body oncontextmenu="doNothing()">
+<div id="cover">
+<span style="font-size: 30px;color: white">正在发送请求，请稍后......</span>
+</div>
+
+<div id="white">
+    <div id="allCenterDiv">
+        <div id="title">
+            <span style="display:block;font-family: myFirstFont;font-size: 27pt;color: #1A1A1A;letter-spacing:5px">在线考试 - 人脸识别登录</span>
+        </div>
+        <div id="faceDiv">
+            <video id="video" width="420" height="305"
+                   controlslist="nofullscreen nodownload noremoteplayback"
+                   x-webkit-airplay="false"
+                   playsinline="true" controls></video>
+        </div>
+        <div id="checkClaim">
+            <span style="font-family: Microsoft YaHei;font-size: 22pt;color: #1A1A1A;letter-spacing:0px">人脸识别验证要求</span>
+        </div>
+        <div id="desc">
+            <span style="font-family: Microsoft YaHei;font-size: 14pt;color: #8B8A8A;letter-spacing:0px">本过程需要考生亲自完成，请将脸正对摄像头，保持光线充足。</span>
+        </div>
+        <div id="checkBtnDiv">
+            <button id="capture">拍照</button>
+        </div>
+    </div>
+</div>
+
+
+    <canvas id="canvas" width="420" height="305" style="display: none" ></canvas>
+    <div id="base64"></div>
+    <div id="ajax"></div>
+
+</body>
+
+<script type="text/javascript" th:inline="javascript">
+
+    var idCard = [[${idCard}]];
+
+    $(function(){
+        if(idCard === undefined || idCard === null || idCard === ""){
+            window.location.href = ctxPath + "/index";
+        }
+    });
+
+    // window.onload = ajax();
+    //访问用户媒体设备的兼容方法
+    function getUserMedia(constraints, success, error) {
+        if (navigator.mediaDevices.getUserMedia) {
+            //最新的标准API
+            navigator.mediaDevices.getUserMedia(constraints).then(success).catch(error);
+        } else if (navigator.webkitGetUserMedia) {
+            //webkit核心浏览器
+            navigator.webkitGetUserMedia(constraints, success, error)
+        } else if (navigator.mozGetUserMedia) {
+            //firfox浏览器
+            navigator.mozGetUserMedia(constraints, success, error);
+        } else if (navigator.getUserMedia) {
+            //旧版API
+            navigator.getUserMedia(constraints, success, error);
+        }
+    }
+
+    let video = document.getElementById('video');
+    let canvas = document.getElementById('canvas');
+    let context = canvas.getContext('2d');
+
+    function success(stream) {
+        //兼容webkit核心浏览器
+        let CompatibleURL = window.URL || window.webkitURL;
+        //将视频流设置为video元素的源
+        console.log(stream);
+
+        //video.src = CompatibleURL.createObjectURL(stream);
+        video.srcObject = stream;
+        video.play();
+    }
+
+    function error(error) {
+        console.log(`访问用户媒体设备失败${error.name}, ${error.message}`);
+    }
+
+    if (navigator.mediaDevices.getUserMedia || navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia) {
+        //调用用户媒体设备, 访问摄像头
+        getUserMedia({
+            video: {
+                width: 420,
+                height: 305
+            }
+        }, success, error);
+    } else {
+        alert('不支持访问用户媒体');
+    }
+
+    document.getElementById('capture').addEventListener('click', function () {
+        context.drawImage(video, 0, 0, 420, 305);
+        let cav = document.getElementById('canvas');
+        let img = convertCanvasToImage(cav);
+        login(img);
+    })
+
+
+
+    //从 canvas 提取图片 image
+    function convertCanvasToImage(canvas) {
+        //新Image对象，可以理解为DOM
+        var image = new Image();
+        // canvas.toDataURL 返回的是一串Base64编码的URL
+        // 指定格式 PNG
+        // image.src = canvas.toDataURL("image/png");
+        return canvas.toDataURL();
+    }
+
+    function getAk() {
+        return "24.ad6a74f3e30a79a8e7ee27bc446987cc.2592000.1616220843.282335-23667884";
+    }
+
+    function showLoading() {
+        $("#cover").css("display","block");
+    }
+    function hideLoading() {
+        $("#cover").css("display","none");
+    }
+
+    function login(img) {
+        showLoading();
+
+        //向后台发送异步请求。
+        // 异步请求可以不进行页面跳转，
+        // 就可以从后台获取到返回的参数。
+        $.ajax({
+            type: "post",
+            url: ctxPath + "/login",
+            data: {idCard: idCard, userLivePic: img},
+            dataType: "json",
+            success: function (result) {
+                hideLoading();
+                //result就是后台向前台返回的结果。
+                if (result.flag) {
+                    window.location.href = ctxPath + "/exam/list";
+                } else {
+                    alert(result.msg);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+                hideLoading();
+            }
+        });
+    }
+</script>
+
+</html>

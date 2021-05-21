@@ -1,0 +1,25 @@
+server:
+  port: 8085
+  max-http-header-size:
+    102400
+  servlet:
+    context-path: /
+
+spring:
+  mvc:
+    static-path-pattern: /static/**
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://127.0.0.1:3306/exam?useUnicode=true&amp&characterEncoding=utf-8&serverTimezone=GMT
+    url: jdbc:mysql://127.0.0.1:3306/exam?useUnicode=true&amp&characterEncoding=utf-8&serverTimezone=GMT
+    username: root
+    password: DB2020=tgdr$
+#    password: root
+    type: com.alibaba.druid.pool.DruidDataSource
+  thymeleaf:
+    cache: false
+
+mybatis-plus:
+  mapper-locations: classpath:com/fr/exam/dao/xml/*Mapper.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

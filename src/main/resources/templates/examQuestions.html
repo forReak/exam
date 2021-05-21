@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"/>
+    <title>登陆</title>
+    <th:block th:include="common/base::proejct-context" th:remove="tag"/>
+</head>
+
+<style>
+
+    *{
+        margin: 0;
+        padding: 0;
+        list-style-type:none
+    }
+
+    @font-face{
+        font-family: myFirstFont;
+        src: url([[@{/static/font/siyuanSong.ttf}]]);
+    }
+
+    body{
+        background: url([[@{/static/image/bg.png}]]);
+    }
+    button{
+        width: 672px;
+        height: 70px;
+        background-color: #2F84F7;
+        border-radius: 8pt;
+        border: 0;
+        outline:none;
+        color: white;
+        font-size: 17px;
+    }
+    button:focus {
+        border: 0 none;
+        outline: none;
+    }
+
+
+
+    #pageTitle{
+        text-align: center;
+        font-family: myFirstFont;
+        font-size: 25pt;
+        color: white;
+        letter-spacing:5px;
+        margin-top: 3vh;
+    }
+    #pageLeft,#pageMid,#pageRight{
+        display: inline-block;
+        margin-top: 3vh;
+        border-radius: 7pt;
+
+    }
+
+    #pageLeft,#pageMid{
+        height: 75vh;
+        min-height: 75vh;
+    }
+
+    #pageRight{
+        min-height: 75vh;
+    }
+
+    /*左**************************************/
+
+    #pageLeft{
+        width: 20vw;
+        margin-left: 1vw;
+        border-radius: 0;
+    }
+    #pageLeft-top{
+        display: inline-block;
+        /*height: 50vh;*/
+        width: 20vw;
+        border-radius: 7pt;
+        background-color: white;
+        padding-bottom: 2vh;
+    }
+
+    #userPic{
+        margin: 0 auto;
+        margin-top: -50px;
+        border: 5pt solid white;
+        width: 8vw;
+        height: 8vw;
+        border-radius: 85px;
+        background: url(
+        "https://emoji.cdn.bcebos.com/yunque/hejirukou.jpg"
+        ) no-repeat;
+        background-size:cover;
+        background-position: center;
+
+    }
+    #userInfo{
+        margin-top: 2vh;
+        text-align: center;
+        font-size: 14px;
+    }
+
+    #examInfo{
+        text-align: center;
+        font-size: 14px;
+        background-color: #F8F8F8;
+        border: 1px solid #CBCBCB;
+        width: 18vw;
+        margin: 0 auto;
+        margin-top: 3vh;
+        padding: 0.5vw;
+    }
+    #subjectInfo{
+        margin: 0 auto;
+        text-align: center;
+        margin-top: 2vh;
+        font-size: 14px;
+    }
+    .item{
+        display: inline-block;
+        width: 5vw;
+    }
+
+    video::-webkit-media-controls-enclosure{
+        display: none;
+    }
+    #video{
+        outline:none;
+        width: 20vw;
+        margin-top: 2vh;
+    }
+    /*中**************************************/
+
+    #pageMid{
+        width: 52vw;
+        /*background-color: white;*/
+        border-radius: 8pt;
+        vertical-align: top;
+        margin-left: 1vw;
+        min-height: 75vh;
+    }
+
+    #pageMid-top{
+        width: 52vw;
+        background-color: white;
+        border-radius: 8pt;
+        min-height: 75vh;
+    }
+
+    #pageMid-top-title{
+        background-color: #F9F9FA;
+        border-radius: 8pt 8pt 0 0 ;
+        border-bottom: 1px solid #D6D6D6;
+    }
+    #pageMid-top-title>span{
+        line-height: 6vh;
+        font-size: 14pt;
+        margin-left: 1vw;
+        /*background-color: #0b2e13;*/
+    }
+    #subjectNumber{
+        font-size: 30pt;
+        font-weight: bold;
+        width: 43vw;
+        margin: 0 auto;
+        margin-top: 2vh;
+    }
+    #subjectTitle{
+        font-size: 14pt;
+        width: 43vw;
+        margin: 0 auto;
+        margin-top: 2vh;
+    }
+    #subjectSelect{
+        font-size: 14pt;
+        width: 43vw;
+        margin: 0 auto;
+        margin-top: 2vh;
+    }
+
+    .subjectSelectItem{
+        margin-top: 1vh;
+        display: flex;
+    }
+    .radio-button{
+        color: #909090;
+        zoom: 150%;
+        vertical-align: text-bottom;
+        display: inline-block;
+    }
+    .abcd{
+        color: #8B8A8A;
+        margin-left: 1vw;
+    }
+    .abcdImg{
+        height: 6vh;
+        margin-left: 1vw;
+    }
+    #prenext{
+        margin-top: 6vh;
+        margin-left: 4vw
+    }
+
+    .prenext-btn{
+        width: 7vw;
+        height: 4vh;
+        border-radius: 5pt;
+        font-size: 13pt;
+    }
+
+    #commit{
+        margin-top: 2vh;
+        width: 16vw;
+        height: 5vh;
+        margin-left: 16vw;
+        margin-bottom: 3vh;
+
+    }
+    /*右**************************************/
+
+    #pageRight{
+        width: 22vw;
+        margin-left: 1vw;
+        /*background-color: white;*/
+        border-radius: 8pt;
+        vertical-align: top;
+    }
+
+    #pageRight-top{
+        width: 22vw;
+        height: 100%;
+        border-radius: 8pt;
+        background-color: white;
+        min-height: 75vh;
+    }
+
+    #pageRight-top-title{
+        background-color: #F9F9FA;
+        border-radius: 8pt 8pt 0 0 ;
+        border-bottom: 1px solid #D6D6D6;
+        text-align: center;
+    }
+
+    #pageRight-top-title>span{
+        line-height: 6vh;
+        font-size: 14pt;
+        margin-left: 1vw;
+        /*background-color: #0b2e13;*/
+    }
+
+    #answerStatus{
+        margin: 0 auto;
+        text-align: center;
+        margin-top: 2vh;
+    }
+
+    .subjectTitle{
+        width: 20vw;
+        line-height: 5vh;
+        /*background-color: #0b2e13;*/
+        margin: 0 auto;
+        margin-top: 4vh;
+        border-bottom: 1px solid #D6D6D6;
+    }
+
+    .smallBoxUl{
+        width: 20vw;
+        margin: 0 auto;
+        margin-top: 2vh;
+    }
+
+
+    .smallBoxBlue{
+        width: 1.6vw;
+        line-height: 3vh;
+        text-align: center;
+        display: inline-block;
+        color: white;
+        margin-top: 1vh;
+        margin-left: 0.3vw;
+        font-size: 10pt;
+        background-color:#2F84F7;
+        cursor: pointer;
+    }
+    .smallBoxWhite{
+        width: 1.6vw;
+        line-height: 3vh;
+        text-align: center;
+        display: inline-block;
+        color: white;
+        margin-top: 1vh;
+        margin-left: 0.3vw;
+        font-size: 10pt;
+        background-color:#D6D6D6;
+        cursor: pointer;
+    }
+    .smallBoxRed{
+        width: 1.6vw;
+        line-height: 3vh;
+        text-align: center;
+        display: inline-block;
+        color: white;
+        margin-top: 1vh;
+        margin-left: 0.3vw;
+        font-size: 10pt;
+        background-color:#EF2941;
+        cursor: pointer;
+    }
+
+
+</style>
+
+<body  oncontextmenu="doNothing()">
+    <div id="pageTitle">——在线考试系统——</div>
+    <div id="pageLeft">
+        <div id="pageLeft-top">
+            <div id="userPic"></div>
+            <div id="userInfo">
+                <span style="color: #666565">姓名：</span><span style="color:#000;" id="userName">用户名</span><br>
+                <span style="color: #666565">身份证：</span><span style="color:#000;" id="idCard">123123123123123123</span>
+            </div>
+            <div id="examInfo">
+                <span><img style="width: 14px;height: 14px" th:src="@{/static/image/clock.png}" alt=""></span><span>剩余时间：</span><span style="color: #EF2941" id="lastTime">56</span><span style="color: #EF2941"></span><br>
+                <span>考试时间：</span><span id="totalTime"></span><span>分钟</span></br>
+                <span>已用：<span id="curTime"></span></span>
+            </div>
+
+            <div id="subjectInfo">
+                <div class=item>
+                    <span style="width: 3vw;display:inline-block;line-height: 4vh;background-color: #324796;color:white;border-radius: 5pt">100</span>
+                    <div>总题</div>
+                </div>
+                <div class=item>
+                    <div id="hadAnswerSubject" style="width: 3vw;display:inline-block;line-height: 4vh;background-color: #3E9632;color:white;border-radius: 5pt">100</div>
+                    <div>已答</div>
+                </div>
+                <div class=item>
+                    <div id="lastSubject" style="width: 3vw;display:inline-block;line-height: 4vh;background-color: #EF2941;color:white;border-radius: 5pt">100</div>
+                    <div>剩余</div>
+                </div>
+
+            </div>
+
+        </div>
+        <video id="video"
+               controlslist="nofullscreen nodownload noremoteplayback"
+               x-webkit-airplay="false"
+               playsinline="true" controls></video>
+        <div style="color: white"><span style="font-weight: bold;font-size: 14px">温馨提示：</span><br>
+            <span style="font-size: 14px">考试过程中，务必保证镜头正对面部，人脸完整呈现在画面中，系统不定时对考试身份进行识别，识别失败会影响考试进程，请考生谨记。</span>
+        </div>
+    </div>
+
+    <div id="pageMid">
+        <div id="pageMid-top">
+            <div id="pageMid-top-title">
+                <span style="line-height: 2vw;vertical-align: middle"><img style="width: 2vw;height: 2vw" th:src="@{/static/image/tanhao.png}" alt=""></span>
+                <span>考试科目：<span id="examName">xxxxxxxx</span>考试题(共100题，每题1分)</span>
+            </div>
+            <div id="subjectNumber">
+                第99题
+            </div>
+            <div id="subjectTitle">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias dolorum eum eveniet inventore ipsam, laborum nostrum quod rem sit soluta? Facilis obcaecati reiciendis totam unde. Assumenda doloribus molestiae qui quisquam?
+            </div>
+            <ul id="subjectSelect">
+                <!--<li class="subjectSelectItem"><input type="radio" class="radio-button" name="abcd"><span class="abcd">A、</span><span class="abcdValue">选择题选项选择题选项</span><img class="abcdImg" th:src="@{/static/image/subjectImgTest.png}" alt=""></li>
+                <li class="subjectSelectItem"><input type="radio" class="radio-button" name="abcd"><span class="abcd">B、</span><span class="abcdValue">选择题选项选择题选项</span><img class="abcdImg" th:src="@{/static/image/tanhao.png}" alt=""></li>
+                <li class="subjectSelectItem"><input type="radio" class="radio-button" name="abcd"><span class="abcd">C、</span><span class="abcdValue">选择题选项选择题选项</span><img class="abcdImg" th:src="@{/static/image/faceBorder.png}" alt=""></li>-->
+            </ul>
+            <div id="prenext">
+                <button onclick="preSubject()" class="prenext-btn" style="background-color: #6CC95F">&lt;&lt;上一题</button>
+                <button onclick="nextSubject()" class="prenext-btn" style="margin-left: 3vw;background-color: #FEB02A">下一题&gt;&gt;</button>
+            </div>
+            <div>
+                <button id="commit" onclick="commit()" style="">确认交卷</button>
+            </div>
+        </div>
+        <div id="pageMid-bottom" style="text-align: center;color:white;margin-top: 1vh">
+            ——考试中心——
+        </div>
+    </div>
+
+    <div id="pageRight">
+        <div id="pageRight-top">
+            <div id="pageRight-top-title">
+                <span>答题情况</span>
+            </div>
+            <div id="answerStatus">
+                <div style="display: inline-block;border: 1px solid #D6D6D6">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>&nbsp;&nbsp;未答
+                <div style="display: inline-block;background-color: #EF2941;margin-left: 1vw">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>&nbsp;&nbsp;在答
+                <div style="display: inline-block;background-color: #2F84F7;margin-left: 1vw">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>&nbsp;&nbsp;已答
+            </div>
+
+            <div class="subjectTitle">
+                <span style="line-height: 2vw"><img style="width: 1.5vw;height: 1.5vw;vertical-align: middle" th:src="@{/static/image/yes.png}" alt=""></span><span>判断题</span>
+            </div>
+            <ul class="smallBoxUl" id="judgeList">
+<!--                <li class="smallBox">1</li>-->
+<!--                <li class="smallBox">2</li>-->
+<!--                <li class="smallBox">3</li>-->
+<!--                <li class="smallBox">4</li>-->
+<!--                <li class="smallBox">5</li>-->
+<!--                <li class="smallBox">6</li>-->
+<!--                <li class="smallBox">7</li>-->
+<!--                <li class="smallBox">8</li>-->
+<!--                <li class="smallBox">9</li>-->
+<!--                <li class="smallBox">10</li>-->
+<!--                <li class="smallBox">1</li>-->
+<!--                <li class="smallBox">2</li>-->
+<!--                <li class="smallBox">3</li>-->
+<!--                <li class="smallBox">4</li>-->
+<!--                <li class="smallBox">5</li>-->
+<!--                <li class="smallBox">6</li>-->
+<!--                <li class="smallBox">7</li>-->
+<!--                <li class="smallBox">8</li>-->
+<!--                <li class="smallBox">9</li>-->
+<!--                <li class="smallBox">10</li>-->
+            </ul>
+            <div class="subjectTitle">
+                <span style="line-height: 2vw"><img style="width: 1.5vw;height: 1.5vw;vertical-align: middle" th:src="@{/static/image/yes.png}" alt=""></span><span>选择题</span>
+            </div>
+            <ul style="padding-bottom: 1vh" class="smallBoxUl" id="switchList">
+<!--                <li class="smallBox">1</li>-->
+<!--                <li class="smallBox">2</li>-->
+<!--                <li class="smallBox">3</li>-->
+<!--                <li class="smallBox">4</li>-->
+<!--                <li class="smallBox">5</li>-->
+<!--                <li class="smallBox">6</li>-->
+<!--                <li class="smallBox">7</li>-->
+<!--                <li class="smallBox">8</li>-->
+<!--                <li class="smallBox">9</li>-->
+<!--                <li class="smallBox">10</li>-->
+<!--                <li class="smallBox">1</li>-->
+<!--                <li class="smallBox">2</li>-->
+<!--                <li class="smallBox">3</li>-->
+<!--                <li class="smallBox">4</li>-->
+<!--                <li class="smallBox">5</li>-->
+<!--                <li class="smallBox">6</li>-->
+<!--                <li class="smallBox">7</li>-->
+<!--                <li class="smallBox">8</li>-->
+<!--                <li class="smallBox">9</li>-->
+<!--                <li class="smallBox">10</li>-->
+<!--                <li class="smallBox">1</li>-->
+<!--                <li class="smallBox">2</li>-->
+<!--                <li class="smallBox">3</li>-->
+<!--                <li class="smallBox">4</li>-->
+<!--                <li class="smallBox">5</li>-->
+<!--                <li class="smallBox">6</li>-->
+<!--                <li class="smallBox">7</li>-->
+<!--                <li class="smallBox">8</li>-->
+<!--                <li class="smallBox">9</li>-->
+<!--                <li class="smallBox">10</li>-->
+<!--                <li class="smallBox">1</li>-->
+<!--                <li class="smallBox">2</li>-->
+<!--                <li class="smallBox">3</li>-->
+<!--                <li class="smallBox">4</li>-->
+<!--                <li class="smallBox">5</li>-->
+<!--                <li class="smallBox">6</li>-->
+<!--                <li class="smallBox">7</li>-->
+<!--                <li class="smallBox">8</li>-->
+<!--                <li class="smallBox">9</li>-->
+<!--                <li class="smallBox">10</li>-->
+<!--                <li class="smallBox">1</li>-->
+<!--                <li class="smallBox">2</li>-->
+<!--                <li class="smallBox">3</li>-->
+<!--                <li class="smallBox">4</li>-->
+<!--                <li class="smallBox">5</li>-->
+<!--                <li class="smallBox">6</li>-->
+<!--                <li class="smallBox">7</li>-->
+<!--                <li class="smallBox">8</li>-->
+<!--                <li class="smallBox">9</li>-->
+<!--                <li class="smallBox">10</li>-->
+<!--                <li class="smallBox">1</li>-->
+<!--                <li class="smallBox">2</li>-->
+<!--                <li class="smallBox">3</li>-->
+<!--                <li class="smallBox">4</li>-->
+<!--                <li class="smallBox">5</li>-->
+<!--                <li class="smallBox">6</li>-->
+<!--                <li class="smallBox">7</li>-->
+<!--                <li class="smallBox">8</li>-->
+<!--                <li class="smallBox">9</li>-->
+<!--                <li class="smallBox">10</li>-->
+            </ul>
+        </div>
+        <div id="pageRight-bottom" style="color:white;margin-top: 1vh;margin-right:1vw;float: right"></div>
+    </div>
+
+<div id="tips" style="display: none;position:fixed; top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;width: 100vw;height: 100vh;background: rgba(0,0,0,0.4);">
+    <div id="back" style="margin-left:35vw;margin-top:35vh;width: 30vw;height: 30vh;background-color: white;border-radius: 5pt">
+        <div id="" style="text-align: center"><span id="alertText" style="line-height: 20vh;vertical-align: center;font-size: 20px"></span></div>
+        <button id="continueExam" onclick="continueExam()" style="background-color:#9FA5AD;margin-left:4vw;width: 10vw;height: 5vh;">继续做题</button>
+        <button id="commitExam" onclick="commitExam()" style="margin-left:1vw;width: 10vw;height: 5vh;">确认交卷</button>
+    </div>
+</div>
+</body>
+
+<script type="text/javascript" th:inline="javascript">
+
+
+
+    function getUserMedia(constraints, success, error) {
+        if (navigator.mediaDevices.getUserMedia) {
+            //最新的标准API
+            navigator.mediaDevices.getUserMedia(constraints).then(success).catch(error);
+        } else if (navigator.webkitGetUserMedia) {
+            //webkit核心浏览器
+            navigator.webkitGetUserMedia(constraints, success, error)
+        } else if (navigator.mozGetUserMedia) {
+            //firfox浏览器
+            navigator.mozGetUserMedia(constraints, success, error);
+        } else if (navigator.getUserMedia) {
+            //旧版API
+            navigator.getUserMedia(constraints, success, error);
+        }
+    }
+
+    let video = document.getElementById('video');
+    let canvas = document.getElementById('canvas');
+
+    function success(stream) {
+        //兼容webkit核心浏览器
+        let CompatibleURL = window.URL || window.webkitURL;
+        //将视频流设置为video元素的源
+        console.log(stream);
+
+        //video.src = CompatibleURL.createObjectURL(stream);
+        video.srcObject = stream;
+        video.play();
+    }
+
+    function error(error) {
+        console.log(`访问用户媒体设备失败${error.name}, ${error.message}`);
+    }
+
+    if (navigator.mediaDevices.getUserMedia || navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia) {
+        //调用用户媒体设备, 访问摄像头
+        getUserMedia({
+            video: {
+                width: 359,
+                height: 214
+            }
+        }, success, error);
+    } else {
+        alert('不支持访问用户媒体');
+    }
+</script>
+<script type="text/javascript">
+
+    setInterval("document.getElementById('pageRight-bottom').innerHTML=\"现在时间：\"+new Date().toLocaleString();", 1000);
+</script>
+
+<script type="text/javascript" th:inline="javascript">
+    var switchWindowNum = 0;
+    var userInfo = [[${userInfo}]];
+    var examInfo = [[${examInfo}]];
+    var workTypeId = [[${workTypeId}]];
+    var currentNumber = 0;
+    var switchIdList;
+    var switchAnswerList;
+    var judgeIdList;
+    var judgeAnswerList;
+    var allAnswerList;
+    var allIdList;
+    var eid;
+    $(function(){
+        if(userInfo === undefined || userInfo === null || examInfo===undefined || examInfo===null){
+            window.location.href = ctxPath + "/index";
+        }else{
+            switchIdList = examInfo.switchIdList;
+            switchAnswerList = examInfo.switchAnswerList;
+            judgeIdList = examInfo.judgeIdList;
+            judgeAnswerList = examInfo.judgeAnswerList;
+            allIdList = examInfo.allIdList;
+            eid = examInfo.examListId;
+        }
+
+        displayUserInfo();
+        flushItem();
+        //启动定时器计算时间
+        initFlushTime();
+        // initFirstSubject();
+        initCheat();
+    });
+
+    function initCheat(){
+        window.onblur = function() {
+            if(switchWindowNum===0 || switchWindowNum<=2){
+                switchWindowNum++;
+                alert('系统检测到您已进行非法操作！请勿切换窗口或点击其他非考试页面！下次将直接停止考试！');
+            }
+            if(switchWindowNum>2){
+                commitExam();
+            }
+        }
+    }
+
+    function initFlushTime(){
+        setInterval(flushTime,1000);
+    }
+
+    /**
+     * 刷新时间
+     **/
+    function flushTime(){
+        $.ajax({
+            type: "post",
+            url: ctxPath + "/exam/flushTime",
+            data: {eid:eid,workTypeId:workTypeId},
+            dataType: "json",
+            success: function (result) {
+                if (result.flag) {
+                    // console.log(result.obj);
+                    if(result.msg==="0"){
+                        updateExamTime(result.obj);
+                    }else{
+                        //强制结束考试
+                        alert("考试时间到！停止答题！");
+                        commitExam();
+                    }
+                } else {
+                    alert(result.msg);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+    }
+
+    /**
+     * 更新时间
+     **/
+    function updateExamTime(obj) {
+        let userTime = obj.passTime;
+        let userTimeStr = secToTime(obj.passTime);
+        let totalTime = obj.totalTime;
+        let lastTime = (totalTime - userTime);
+        let lastTimeStr = secToTime(lastTime);
+
+        //设置已用时间
+        console.log("已用：" + userTimeStr)
+        $("#curTime").html(userTimeStr);
+
+        //设置总时间 分钟
+        let TotalTimeStr = totalTime/60;
+        $("#totalTime").html(TotalTimeStr);
+
+        //设置剩余时间
+        $("#lastTime").html(lastTimeStr);
+    }
+
+    function secToTime(time){
+        let secondTime = parseInt(time)//将传入的秒的值转化为Number
+        let min = 0// 初始化分
+        let h =0// 初始化小时
+        if(secondTime>60){//如果秒数大于60，将秒数转换成整数
+            min=parseInt(secondTime/60)//获取分钟，除以60取整数，得到整数分钟
+            secondTime=parseInt(secondTime%60)//获取秒数，秒数取佘，得到整数秒数
+            if(min>60){//如果分钟大于60，将分钟转换成小时
+                h=parseInt(min/60)//获取小时，获取分钟除以60，得到整数小时
+                min=parseInt(min%60) //获取小时后取佘的分，获取分钟除以60取佘的分
+            }
+        }
+        return  h +"时"+ min +"分"+ secondTime+ "秒";
+    }
+
+    function displayUserInfo(){
+        $("#userPic").css("background-image","URL('data:image/png;base64,"+userInfo.userPic+"')");
+        $("#userName").html(userInfo.userName);
+        $("#idCard").html(userInfo.idCard);
+        $("#examName").html(userInfo.examName);
+    }
+
+    /**
+     * 初始化第一道考试题
+     **/
+    function initFirstSubject(){
+        var currentSubject = allIdList[currentNumber];
+        if(currentSubject!==null && currentSubject!==undefined && currentSubject!==""){
+            //请求指定题目数据
+            getSubject(currentSubject,currentNumber,null);
+        }
+    }
+    /**
+     * 获取第一题考试信息
+     **/
+    function getFirstSubject(subjectId,number){
+        currentNumber = number;
+        // alert("subjectId:"+subjectId+",number:"+number)
+        $.ajax({
+            type: "post",
+            url: ctxPath + "/exam/getSubjectById",
+            data: {subjectId: subjectId,firstSubject:true},
+            dataType: "json",
+            success: function (result) {
+                if (result.flag) {
+                    console.log(result.obj);
+                    fillSubject(result.obj,number,answer);
+                    flushItem();
+                } else {
+                    alert(result.msg);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+    }
+
+    /**
+     * 根据考试id获取考试信息
+     **/
+    function getSubject(subjectId,number,answer){
+        currentNumber = number;
+        $.ajax({
+            type: "post",
+            url: ctxPath + "/exam/getSubjectById",
+            data: {subjectId: subjectId},
+            dataType: "json",
+            success: function (result) {
+                if (result.flag) {
+                    console.log(result.obj);
+                    fillSubject(result.obj,number,answer);
+                    // flushItem();
+                } else {
+                    alert(result.msg);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+    }
+
+    /**
+     * 填充题目
+     * @param subject
+     * @param number
+     */
+    function fillSubject(subject,number,answer){
+        var n = (number+1);
+        var title = subject.subDesc;
+        var a = subject.resultA;
+        var b = subject.resultB;
+        var c = subject.resultC;
+        var picA = '';
+        var picB = '';
+        var picC = '';
+        var pre = 'data:image/png;base64,';
+        if(subject.picA!==null && subject.picA!==undefined ){
+            picA = pre+subject.picA;
+        }
+        if(subject.picB!==null && subject.picB!==undefined ){
+            picB = pre+subject.picB;
+        }
+        if(subject.picC!==null && subject.picC!==undefined ){
+            picC = pre+subject.picC;
+        }
+        var subjectType = subject.subType;
+        $("#subjectNumber").html("第"+n+"题");
+        $("#subjectTitle").html(title);
+        var template;
+        if(subjectType===1){
+            template = "<li class=\"subjectSelectItem\"><input onclick='saveAnswer(1)' type='radio'   value='a' class=\"radio-button\" name=\"abcd\"><span class=\"abcd\">A、</span><span class=\"abcdValue\">"+a+"</span><img class=\"abcdImg\" src='"+picA+"' alt=\"\"></li>\n" +
+                "       <li class=\"subjectSelectItem\"><input onclick='saveAnswer(1)' type=\"radio\" value='b' class=\"radio-button\" name=\"abcd\"><span class=\"abcd\">B、</span><span class=\"abcdValue\">"+b+"</span><img class=\"abcdImg\" src='"+picB+"' alt=\"\"></li>\n" +
+                "       <li class=\"subjectSelectItem\"><input onclick='saveAnswer(1)' type=\"radio\" value='c' class=\"radio-button\" name=\"abcd\"><span class=\"abcd\">C、</span><span class=\"abcdValue\">"+c+"</span><img class=\"abcdImg\" src='"+picC+"' alt=\"\"></li>";
+        }else{
+            template = "<li class=\"subjectSelectItem\"><input onclick='saveAnswer(2)' type=\"radio\" value='y' class=\"radio-button\" name=\"abcd\"><span class=\"abcd\">A、</span><span class=\"abcdValue\">正确</span><img class=\"abcdImg\" th:src=\"\" alt=\"\"></li>\n" +
+                "       <li class=\"subjectSelectItem\"><input onclick='saveAnswer(2)' type=\"radio\" value='n' class=\"radio-button\" name=\"abcd\"><span class=\"abcd\">B、</span><span class=\"abcdValue\">错误</span><img class=\"abcdImg\" th:src=\"\" alt=\"\"></li>\n";
+        }
+
+        $("#subjectSelect").html(template);
+        if(answer!==null){
+            $("input[name='abcd'][value=" + answer + "]").prop("checked", "checked");
+        }
+    }
+
+    function saveAnswer(subjectType){
+        var userAnswer = $("input[name=abcd]:checked").val();
+        $.ajax({
+            type: "post",
+            url: ctxPath + "/exam/saveAnswer",
+            data: {answer: userAnswer,sid:allIdList[currentNumber],examId:eid,subjectType:subjectType},
+            dataType: "json",
+            success: function (result) {
+                console.log(result.flag);
+                flushItem();
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+    }
+
+    /**
+     * 下一题
+     */
+    function nextSubject(){
+        if(currentNumber===99){
+            alert("没有下一题了！");
+            return;
+        }
+        currentNumber++;
+        flushItem();
+        // getSubject(allIdList[currentNumber],currentNumber,allAnswerList[currentNumber].answer);
+
+    }
+
+    /**
+     * 上一题
+     */
+    function preSubject(){
+        if(currentNumber===0){
+            alert("没有上一题了！");
+        }
+        currentNumber--;
+        flushItem();
+        // getSubject(allIdList[currentNumber],currentNumber,allAnswerList[currentNumber].answer);
+    }
+
+    function flushItem(){
+        $.ajax({
+            type: "post",
+            url: ctxPath + "/exam/flushItem",
+            data: {eid:eid},
+            dataType: "json",
+            success: function (result) {
+                if (result.flag) {
+                    initItem(result.obj);
+                    //在刷新考试题时获取当前题目
+                    getSubject(allIdList[currentNumber],currentNumber,allAnswerList[currentNumber].answer);
+                    flushTotalSubjectNum();
+                } else {
+                    alert(result.msg);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+    }
+
+    function initItem(itemList) {
+        let switchList = itemList.switchList;
+        switchAnswerList = itemList.switchList;
+        let judgeList = itemList.judgeList;
+        judgeAnswerList = itemList.judgeList;
+        allAnswerList = judgeAnswerList.concat(switchAnswerList);
+        let judgeHtml = "";
+        for(let i=0; i<judgeList.length; i++){
+            let judgeItem = judgeList[i];
+            if(judgeItem.subjectId === allIdList[currentNumber]){
+                judgeHtml += "<li onclick='itemOnClick(\""+allIdList[judgeItem.index]+"\","+judgeItem.index+",\""+judgeItem.answer+"\")' class='smallBoxRed'>"+(judgeItem.index+1)+"</li>";
+                continue;
+            }
+            if(judgeItem.answer!==undefined && judgeItem.answer !== null && judgeItem.answer!==""){
+                judgeHtml += "<li onclick='itemOnClick(\""+allIdList[judgeItem.index]+"\","+judgeItem.index+",\""+judgeItem.answer+"\")'   class='smallBoxBlue'>"+(judgeItem.index+1)+"</li>";
+
+            }else{
+                judgeHtml += "<li onclick='itemOnClick(\""+allIdList[judgeItem.index]+"\","+judgeItem.index+",\""+judgeItem.answer+"\")'   class='smallBoxWhite'>"+(judgeItem.index+1)+"</li>";
+            }
+        }
+
+        $("#judgeList").html(judgeHtml);
+
+        let switchHtml = "";
+        for (let j = 0 ; j < switchList.length; j++){
+            let switchItem = switchList[j];
+            if(switchItem.subjectId === allIdList[currentNumber]){
+                switchHtml += "<li onclick='itemOnClick(\""+allIdList[switchItem.index]+"\","+switchItem.index+",\""+switchItem.answer+"\")'  class='smallBoxRed'>"+(switchItem.index+1)+"</li>";
+                continue;
+            }
+            if(switchItem.answer!==undefined && switchItem.answer !== null && switchItem.answer!==""){
+                switchHtml += "<li onclick='itemOnClick(\""+allIdList[switchItem.index]+"\","+switchItem.index+",\""+switchItem.answer+"\")'  class='smallBoxBlue'>"+(switchItem.index+1)+"</li>";
+
+            }else{
+                switchHtml += "<li onclick='itemOnClick(\""+allIdList[switchItem.index]+"\","+switchItem.index+",\""+switchItem.answer+"\")'  class='smallBoxWhite'>"+(switchItem.index+1)+"</li>";
+            }
+        }
+        $("#switchList").html(switchHtml);
+    }
+
+    function itemOnClick(subjectId,index,answer){
+        getSubject(subjectId,index,answer);
+        flushItem();
+    }
+
+    function commit(){
+        var allAnswer = 0;
+        for(var i = 0 ; i < allAnswerList.length ; i ++){
+            if(allAnswerList[i].answer !==null){
+                allAnswer++;
+            }
+        }
+        var n = 100 - allAnswer;
+        if(n > 0){
+            showTips(n);
+        }else{
+            showCommit();
+        }
+    }
+
+    function showTips(n){
+        var alertMsg = "您还有<span style='font-size: 25px;color: red'>"+n+"</span>道题未作答，是否交卷？";
+        $("#alertText").html(alertMsg);
+        $("#tips").css("display","block");
+    }
+
+    function showCommit(){
+        var alertMsg = "您已完成全部试题，是否交卷？";
+        $("#alertText").html(alertMsg);
+        $("#tips").css("display","block");
+    }
+
+    function commitExam(){
+        $.ajax({
+            type: "post",
+            url: ctxPath + "/exam/commit",
+            data: {eid:eid},
+            dataType: "json",
+            success: function (result) {
+                if (result.flag) {
+                    let score = (result.obj -0 );
+                    window.location.href=ctxPath + "/exam/examResult" + "?score="+score + "&eid="+eid;
+
+                } else {
+                    alert(result.msg);
+                }
+            },
+            error: function (result) {
+                console.log(result);
+            }
+        });
+    }
+    function continueExam() {
+        $("#tips").css("display","none");
+
+    }
+
+    function flushTotalSubjectNum(){
+        //已作答数
+        var allAnswer = 0;
+        for(var i = 0 ; i < allAnswerList.length ; i ++){
+            if(allAnswerList[i].answer !==null){
+                allAnswer++;
+            }
+        }
+        //未作答数
+        var n = 100 - allAnswer;
+
+        $("#hadAnswerSubject").html(allAnswer);
+        $("#lastSubject").html(n);
+    }
+</script>
+</html>
